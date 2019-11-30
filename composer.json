@@ -18,12 +18,12 @@
 	
 	"autoload": {
         "psr-4": {
-            "Illuminate\\": "src/Farol/"
+            "Farol\\": "src/Farol/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Illuminate\\": "src/Farol/"
+            "Farol\\": "src/Farol/"
         }
     },
 
