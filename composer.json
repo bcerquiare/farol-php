@@ -15,5 +15,18 @@
             "email": "bcerquiare@outlook.com"
         }
     ],
+	
+	"autoload": {
+        "psr-4": {
+            "Illuminate\\": "src/Farol/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Illuminate\\": "src/Farol/"
+        }
+    },
+
     "minimum-stability": "dev"
+
 }
