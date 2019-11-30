@@ -17,11 +17,17 @@
     ],
 	
 	"autoload": {
+		"files": [
+            "src/Farol/Helper.php"
+        ],
         "psr-4": {
             "Farol\\": "src/Farol/"
         }
     },
     "autoload-dev": {
+		"files": [
+            "src/Farol/Helper.php"
+        ],
         "psr-4": {
             "Farol\\": "src/Farol/"
         }
