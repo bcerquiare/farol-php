@@ -1,0 +1,19 @@
+{
+    "name": "farol/lib-php",
+    "description": "Biblioteca farol para PHP",
+    "type": "library",
+    "require": {
+        "laravel/laravel": "dev-master"
+    },
+    "require-dev": {
+        "laravel/laravel": "dev-master"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bruno",
+            "email": "bcerquiare@outlook.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
