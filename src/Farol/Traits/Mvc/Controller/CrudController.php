@@ -47,6 +47,22 @@ trait CrudController{
 
     }
 
+	/**
+	 * Retorna a view de indice
+	 * @return JsonMaker|array
+	 */
+    public function index(){
+
+        return json()->configure(function(JsonMaker $json){
+			$json->data()->items()->set( $this->indexList() );
+		});
+
+    }
+
+	protected function indexList(){
+		return $this->getModel()->select();
+	}
+
     /**
      * Retorno da função view usado para ver apenas os dados da model
      * @param int|Model $param
