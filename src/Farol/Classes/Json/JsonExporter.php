@@ -103,7 +103,11 @@ class JsonExporter implements Jsonable{
 
             return $object->toArray();
 
-		}elseif( \is_array($object) ){
+		}elseif( $object instanceof \Illuminate\Database\Eloquent\Builder ){
+
+            return $object->get()->toArray();
+
+        }elseif( \is_array($object) ){
             return $object;
         }
 
