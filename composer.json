@@ -3,7 +3,6 @@
     "description": "Biblioteca farol para PHP",
     "type": "library",
     "require": {
-        "laravel/laravel": "^6.2"
     },
     "require-dev": {
         "laravel/laravel": "^6.2"
