@@ -3,10 +3,10 @@
     "description": "Biblioteca farol para PHP",
     "type": "library",
     "require": {
-        "laravel/laravel": "dev-master"
+        "laravel/laravel": "^6.2"
     },
     "require-dev": {
-        "laravel/laravel": "dev-master"
+        "laravel/laravel": "^6.2"
     },
     "license": "MIT",
     "authors": [
