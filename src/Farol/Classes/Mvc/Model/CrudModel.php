@@ -60,8 +60,8 @@ class CrudModel{
         $this->model->fill($fill);
         $this->model->save();
 
-        $this->afterStore($data);
-        $this->afterSave($data);
+        $this->afterStore($this->model, $data);
+        $this->afterSave($this->model, $data);
 
         return $this->model;
 
@@ -72,7 +72,7 @@ class CrudModel{
      * @param array $data
      * @return void
      */
-    public function afterStore(array $data){
+    public function afterStore(EloquentModel $model, array $data){
     }
 
 	/**
@@ -121,8 +121,8 @@ class CrudModel{
         $this->model->fill($fill);
         $this->model->save();
 
-        $this->afterUpdate($data);
-        $this->afterSave($data);
+        $this->afterUpdate($this->model, $data);
+        $this->afterSave($this->model, $data);
 
         return $this->model;
 
@@ -133,11 +133,11 @@ class CrudModel{
      * @param array $data
      * @return void
      */
-    public function afterUpdate(array $data){
+    public function afterUpdate(EloquentModel $model, array $data){
 
     }
 
-	public function afterSave(array $data){
+	public function afterSave(EloquentModel $model, array $data){
 
 	}
 
