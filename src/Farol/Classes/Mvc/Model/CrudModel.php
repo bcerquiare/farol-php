@@ -4,6 +4,7 @@ namespace Farol\Classes\Mvc\Model;
 
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Validator as IlluminateValidator;
 
 class CrudModel{
 
@@ -28,7 +29,7 @@ class CrudModel{
 	 * @param array $data
 	 * @return void
 	 */
-	public function validateStore(array $data) : ?Validator{
+	public function validateStore(array $data) : ?IlluminateValidator{
 		return null;
 	}
 
@@ -52,7 +53,7 @@ class CrudModel{
 
 		$this->beforeStore($data);
 		$validator = $this->validateStore($data);
-		
+
 		if( $validator && $validator->fails() ){
 			throw new \Exception("Erro de validação");
 		}
@@ -114,7 +115,7 @@ class CrudModel{
 
 		$this->beforeUpdate($data);
 		$validator = $this->validateUpdate($data);
-		
+
 		if( $validator && $validator->fails() ){
 			throw new \Exception("Erro de validação");
 		}
