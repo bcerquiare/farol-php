@@ -12,6 +12,24 @@ class CrudModel{
         $this->model = $model;
     }
 
+	/**
+	 * Função executada antes de inserir no banco
+	 * Permite a manipulação da array
+	 * @param array $data
+	 * @return void
+	 */
+	public function beforeStore(array &$data){
+	}
+
+	/**
+	 * Executa a validação dos dados antes da inserção
+	 *
+	 * @param array $data
+	 * @return void
+	 */
+	public function validateStore(array $data){
+	}
+
     /**
      * Insere um novo registro da model
      * @param array $data
@@ -32,6 +50,9 @@ class CrudModel{
 
         }
 
+		$this->beforeStore($data);
+        $this->validateStore($data);
+
         $this->model->fill($fill);
         $this->model->save();
 
@@ -50,6 +71,23 @@ class CrudModel{
     public function afterStore(array $data){
     }
 
+	/**
+	 * Função chamada antes de executar um update
+	 * Permite a manipulação da array
+	 * @param array $data
+	 * @return void
+	 */
+	public function beforeUpdate(array &$data){
+	}
+
+	/**
+	 * Executa a validação dos dados antes do update
+	 * @param array $data
+	 * @return void
+	 */
+	public function validateUpdate(array $data){
+	}
+
     /**
      * Atualiza dados da model
      * @param array $data
@@ -67,6 +105,9 @@ class CrudModel{
         foreach($columns as $column){
             $fill[ $column ] = $data[ $column ];
         }
+
+		$this->beforeUpdate($data);
+		$this->validateUpdate($data);
 
         $this->model->fill($fill);
         $this->model->save();
