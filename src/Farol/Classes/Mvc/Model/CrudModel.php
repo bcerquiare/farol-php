@@ -55,6 +55,7 @@ class CrudModel{
 		$validator = $this->validateStore($data);
 
 		if( $validator && $validator->fails() ){
+			dd($validator);
 			throw new \Exception("Erro de validação");
 		}
 
@@ -117,6 +118,7 @@ class CrudModel{
 		$validator = $this->validateUpdate($data);
 
 		if( $validator && $validator->fails() ){
+			dd($validator);
 			throw new \Exception("Erro de validação");
 		}
 
