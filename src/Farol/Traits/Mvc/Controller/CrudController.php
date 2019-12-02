@@ -142,7 +142,7 @@ trait CrudController{
         $model  = $this->getModel();
         $crud   = $model->crud();
 
-        $crud->create($data);
+        $crud->store($data);
 
         return $model;
 

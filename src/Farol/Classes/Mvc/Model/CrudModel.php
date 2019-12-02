@@ -17,7 +17,7 @@ class CrudModel{
      * @param array $data
      * @return EloquentModel
      */
-    public function create(array $data) : EloquentModel{
+    public function store(array $data) : EloquentModel{
 
         if( $this->model->getKey() ){
             throw new \Exception("O id da model já está atribuida. Tente usar update ao invés de create.");
@@ -35,7 +35,8 @@ class CrudModel{
         $this->model->fill($fill);
         $this->model->save();
 
-        $this->afterCreate($data);
+        $this->afterStore($data);
+        $this->afterSave($data);
 
         return $this->model;
 
@@ -46,7 +47,7 @@ class CrudModel{
      * @param array $data
      * @return void
      */
-    public function afterCreate(array $data){
+    public function afterStore(array $data){
     }
 
     /**
@@ -71,6 +72,7 @@ class CrudModel{
         $this->model->save();
 
         $this->afterUpdate($data);
+        $this->afterSave($data);
 
         return $this->model;
 
@@ -84,6 +86,10 @@ class CrudModel{
     public function afterUpdate(array $data){
 
     }
+
+	public function afterSave(array $data){
+
+	}
 
     /**
      * Undocumented function

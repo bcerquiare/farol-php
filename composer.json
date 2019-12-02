@@ -1,5 +1,5 @@
 {
-    "name": "farol/lib-php",
+    "name": "farolinovacoes/farol-php",
     "description": "Biblioteca farol para PHP",
     "type": "library",
     "require": {
