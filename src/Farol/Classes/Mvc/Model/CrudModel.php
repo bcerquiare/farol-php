@@ -69,10 +69,11 @@ class CrudModel{
 
     /**
      * Função chamada depois que a model é salva no banco
+     * @param EloquentModel $model
      * @param array $data
      * @return void
      */
-    public function afterStore(EloquentModel $model, array $data){
+    public function afterStore($model, array $data){
     }
 
 	/**
@@ -130,14 +131,21 @@ class CrudModel{
 
     /**
      * Função chamada depois que a model é atualizada
+     * @param EloquentModel $model
      * @param array $data
      * @return void
      */
-    public function afterUpdate(EloquentModel $model, array $data){
+    public function afterUpdate($model, array $data){
 
     }
 
-	public function afterSave(EloquentModel $model, array $data){
+	/**
+	 * Função chamada depois de um store ou update
+	 * @param EloquentModel $model
+	 * @param array $data
+	 * @return void
+	 */
+	public function afterSave($model, array $data){
 
 	}
 
