@@ -56,7 +56,7 @@ class CrudModel{
 
 		if( $validator && $validator->fails() ){
 			dd($validator);
-			throw new \Exception("Erro de validação");
+			throw new \Exception("Erro de validação " . \implode(", ", $validator->getMessageBag()->getMessages()));
 		}
 
         $this->model->fill($fill);
@@ -92,7 +92,7 @@ class CrudModel{
 	 * @param array $data
 	 * @return void
 	 */
-	public function validateUpdate(array $data) : ?Validator{
+	public function validateUpdate(array $data) : ?IlluminateValidator{
 		return null;
 	}
 
@@ -119,7 +119,7 @@ class CrudModel{
 
 		if( $validator && $validator->fails() ){
 			dd($validator);
-			throw new \Exception("Erro de validação");
+			throw new \Exception("Erro de validação " . \implode(", ", $validator->getMessageBag()->getMessages()));
 		}
 
         $this->model->fill($fill);
