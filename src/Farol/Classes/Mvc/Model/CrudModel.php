@@ -3,7 +3,7 @@
 namespace Farol\Classes\Mvc\Model;
 
 use Illuminate\Database\Eloquent\Model as EloquentModel;
-use Illuminate\Validation\Validator;
+use \Validator;
 
 class CrudModel{
 
