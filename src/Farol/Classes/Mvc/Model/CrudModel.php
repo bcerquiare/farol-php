@@ -47,12 +47,12 @@ class CrudModel{
         $columns = $this->model->getFillable();
         $fill = [];
 
+		$this->beforeStore($data);
+		$validator = $this->validateStore($data);
+
         foreach($columns as $column){
             $fill[ $column ] = $data[ $column ];
         }
-
-		$this->beforeStore($data);
-		$validator = $this->validateStore($data);
 
 		if( $validator && $validator->fails() ){
 			dd($validator->getMessageBag()->getMessages());
@@ -110,12 +110,12 @@ class CrudModel{
         $columns = $this->model->getFillable();
         $fill = [];
 
+		$this->beforeUpdate($data);
+		$validator = $this->validateUpdate($data);
+
         foreach($columns as $column){
             $fill[ $column ] = $data[ $column ];
         }
-
-		$this->beforeUpdate($data);
-		$validator = $this->validateUpdate($data);
 
 		if( $validator && $validator->fails() ){
 			dd($validator->getMessageBag()->getMessages());
