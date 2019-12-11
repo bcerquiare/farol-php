@@ -107,7 +107,7 @@ class JsonExporter implements Jsonable{
 
             return $object->get()->toArray();
 
-        }elseif( \is_array($object) ){
+        }else{
             return $object;
         }
 
