@@ -169,10 +169,21 @@ class JsonExporter implements Jsonable{
                         $arr[ $relation->relationNameAlias() ] = [];
                         $this->fetchArrayModel( $arr[ $relation->relationNameAlias() ], $relation, $relationData );
 
-                    }
+                    }else if( $relation->resultType() == RelationType::RESULT_AS_APPEND ){
+
+						dd("JsonExporter nao tem essa funcao feita");
+						\array_merge( $arr, $model->getAttributes() );
+
+					}
 
 				}else{
-					$arr[ $relationName ] = $relationData;
+
+					if( $relation->resultType() == RelationType::RESULT_AS_APPEND ){
+						$arr = \array_merge( $arr, $relationData->toArray() );
+					}else{
+						$arr[ $relationName ] = $relationData;
+					}
+
 				}
 
 			}

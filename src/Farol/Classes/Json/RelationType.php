@@ -5,8 +5,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class RelationType{
 
-    const RESULT_AS_MODEL = 0;
-    const RESULT_AS_ARRAY = 1;
+    const RESULT_AS_MODEL 	= 0;
+    const RESULT_AS_ARRAY 	= 1;
+	const RESULT_AS_APPEND	= 2;
 
     protected $raw;
     protected $resultType;
@@ -23,6 +24,7 @@ class RelationType{
 
         switch($type){
             case "array":   return self::RESULT_AS_ARRAY; break;
+			case "append":	return self::RESULT_AS_APPEND; break;
             default:        return self::RESULT_AS_MODEL; break;
         }
 
