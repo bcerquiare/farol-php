@@ -103,7 +103,7 @@ trait CrudController{
      * Retorna os dados de estrutura que serão usados nos formulários
      * @return array
      */
-    public function structure(){
+    public function structure( array $data=[] ){
         return [];
     }
 
@@ -155,8 +155,11 @@ trait CrudController{
      */
     public function edit($id){
 
-        return $this->view($id)->configure(function( JsonMaker $json ){
-            $json->data()->structure()->append( $this->structure() );
+		$resource = $this->view($id);
+		$data = $resource->toArray()["data"]["model"];
+
+        return $resource->configure(function( JsonMaker $json ) use ( $data ){
+            $json->data()->structure()->append( $this->structure( $data ) );
         });
 
     }

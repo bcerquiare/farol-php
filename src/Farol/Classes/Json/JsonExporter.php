@@ -115,7 +115,7 @@ class JsonExporter implements Jsonable{
 
 	public function fetchModel( array &$arr, Model $model, $args=[] ){
 
-		$arr = $model->getAttributes();
+		$arr = $model->toArray();
 		$this->fetchModelRelationships( $arr, $model, ( isset( $args["with"] ) ? $args["with"] : [] ) );
 
 	}
@@ -172,7 +172,7 @@ class JsonExporter implements Jsonable{
                     }else if( $relation->resultType() == RelationType::RESULT_AS_APPEND ){
 
 						dd("JsonExporter nao tem essa funcao feita");
-						\array_merge( $arr, $model->getAttributes() );
+						\array_merge( $arr, $model->toArray() );
 
 					}
 
