@@ -171,15 +171,13 @@ class JsonExporter implements Jsonable{
 
                     }else if( $relation->resultType() == RelationType::RESULT_AS_APPEND ){
 
-						dd("JsonExporter nao tem essa funcao feita");
-						\array_merge( $arr, $model->toArray() );
-
+						dd("FUNCAO NAO IMPLAMENTADA EM JSONEXPORTER");
 					}
 
 				}else{
 
 					if( $relation->resultType() == RelationType::RESULT_AS_APPEND ){
-						$arr = \array_merge( $arr, $relationData->toArray() );
+						$arr = \array_merge( $arr, ( $relationData ? $relationData->toArray() : [] ) );
 					}else{
 						$arr[ $relationName ] = $relationData;
 					}
