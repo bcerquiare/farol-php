@@ -15,6 +15,24 @@ class CrudModel{
     }
 
 	/**
+	 * Função executada antes de inserir ou atualizar no banco
+	 * Permite a manipulação da array
+	 * @param array $data
+	 * @return void
+	 */
+	public function prepareSave(array &$data){
+	}
+
+	/**
+	 * Função executada antes de inserir no banco
+	 * Permite a manipulação da array
+	 * @param array $data
+	 * @return void
+	 */
+	public function prepareStore(array &$data){
+	}
+
+	/**
 	 * Função executada antes de inserir no banco
 	 * Permite a manipulação da array
 	 * @param array $data
@@ -47,6 +65,8 @@ class CrudModel{
         $columns = $this->model->getFillable();
         $fill = [];
 
+		$this->prepareSave($data);
+		$this->prepareStore($data);
 		$this->beforeStore($data);
 		$validator = $this->validateStore($data);
 
@@ -84,6 +104,15 @@ class CrudModel{
 	 * @param array $data
 	 * @return void
 	 */
+	public function prepareUpdate(array &$data){
+	}
+
+	/**
+	 * Função chamada antes de executar um update
+	 * Permite a manipulação da array
+	 * @param array $data
+	 * @return void
+	 */
 	public function beforeUpdate(array &$data){
 	}
 
@@ -110,6 +139,8 @@ class CrudModel{
         $columns = $this->model->getFillable();
         $fill = [];
 
+		$this->prepareSave($data);
+		$this->prepareUpdate($data);
 		$this->beforeUpdate($data);
 		$validator = $this->validateUpdate($data);
 
