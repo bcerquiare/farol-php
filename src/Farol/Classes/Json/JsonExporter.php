@@ -4,6 +4,8 @@ namespace Farol\Classes\Json;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -156,7 +158,7 @@ class JsonExporter implements Jsonable{
 		$relationObject	= $model->$relationName();
 		$relationData = $model->$relationName;
 
-		if( $relationObject instanceof HasOne ){
+		if( $relationObject instanceof HasOne || $relationObject instanceof BelongsTo){
 
 			if( $relation->resultType() == RelationType::RESULT_AS_APPEND ){
 
@@ -174,7 +176,11 @@ class JsonExporter implements Jsonable{
 
 			}
 
-		}else if( $relationObject instanceof HasManyThrough || $relationObject instanceof HasMany ){
+		}else if( 
+			$relationObject instanceof HasManyThrough || 
+			$relationObject instanceof HasMany || 
+			$relationObject instanceof BelongsToMany
+		){
 
 			$relationData->each(function(Model $model) use (&$arr, $relation, $relationName, $relationObject, $relationData, $arrWith){
 
