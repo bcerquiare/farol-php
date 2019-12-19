@@ -167,20 +167,22 @@ class JsonExporter implements Jsonable{
 
 			}else if( $relation->resultType() == RelationType::RESULT_AS_MODEL){
 
-				$arr[$relationName] = [];
-
 				if( $relationData ){
 					$arr[$relationName] = $relationData->toArray();
 					$this->fetchModelRelationships( $arr[$relationName], $relationData, $arrWith );
+				}else{
+					$arr[$relationName] = (object)[];
 				}
 
 			}
 
-		}else if( 
-			$relationObject instanceof HasManyThrough || 
-			$relationObject instanceof HasMany || 
+		}else if(
+			$relationObject instanceof HasManyThrough ||
+			$relationObject instanceof HasMany ||
 			$relationObject instanceof BelongsToMany
 		){
+
+			$arr[$relationName] = [];
 
 			$relationData->each(function(Model $model) use (&$arr, $relation, $relationName, $relationObject, $relationData, $arrWith){
 
