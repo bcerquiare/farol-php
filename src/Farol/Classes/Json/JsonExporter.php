@@ -4,6 +4,9 @@ namespace Farol\Classes\Json;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
 
 class JsonExporter implements Jsonable{
@@ -150,8 +153,9 @@ class JsonExporter implements Jsonable{
 			}else{
 
                 $relation = new RelationType($v);
-				$relationName = $relation->relationName();
-				$relationData = $model->$relationName;
+				$relationName 	= $relation->relationName();
+				$relationObject	= $model->$relationName();
+				$relationData 	= $model->$relationName;
 
 				if( $relationData instanceof Collection ){
 
@@ -177,15 +181,35 @@ class JsonExporter implements Jsonable{
 				}else{
 
 					if( $relation->resultType() == RelationType::RESULT_AS_APPEND ){
-						$arr = \array_merge( $arr, ( $relationData ? $relationData->toArray() : [] ) );
+						$arr = \array_merge( $arr, $this->exportObjectByRelation( $relationObject, $relationData ) );
 					}else{
-						$arr[ $relationName ] = $relationData;
+						//$arr[ $relationName ] = ( $relationData ? $relationData->toArray() : [] );
+						$arr[ $relationName ] = $this->exportObjectByRelation( $relationObject, $relationData );
 					}
 
 				}
 
 			}
 
+		}
+
+	}
+
+	/**
+	 * Escolhe o tipo de exportação dos dados, array ou objeto
+	 *
+	 * @param [type] $relation
+	 * @param [type] $relationData
+	 * @return void
+	 */
+	protected function exportObjectByRelation( $relation, $relationData ){
+
+		if( $relation instanceof HasOne ){
+			return (object)( $relationData ? $relationData->toArray() : [] );
+		}else if( $relation instanceof HasMany || $relation instanceof HasManyThrough ){
+			return ( $relationData ? $relationData->toArray() : [] );
+		}else{
+			return ( $relationData ? $relationData->toArray() : [] );
 		}
 
 	}
