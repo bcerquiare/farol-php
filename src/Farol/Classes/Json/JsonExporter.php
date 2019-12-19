@@ -135,23 +135,100 @@ class JsonExporter implements Jsonable{
 
 		foreach( $arrWith as $k => $v ){
 
+			// Existem relacionamentos dentro
+			if( \is_array($v) ){
+				$this->fetchModelRelationship( $arr, $model, $k, $v );
+			}else{
+
+				// Não existem relacionamentos dentro
+				$this->fetchModelRelationship( $arr, $model, $v, [] );
+
+			}
+
+		}
+
+	}
+
+	protected function fetchModelRelationship( &$arr, Model $model, $relationString, $arrWith ){
+
+		$relation = new RelationType($relationString);
+		$relationName = $relation->relationName();
+		$relationObject	= $model->$relationName();
+		$relationData = $model->$relationName;
+
+		if( $relationObject instanceof HasOne ){
+
+			if( $relation->resultType() == RelationType::RESULT_AS_APPEND ){
+
+				$arr = \array_merge( $arr, $relationData->toArray() );
+				$this->fetchModelRelationships( $arr, $relationData, $arrWith );
+
+			}else if( $relation->resultType() == RelationType::RESULT_AS_MODEL){
+
+				$arr[$relationName] = [];
+
+				if( $relationData ){
+					$arr[$relationName] = $relationData->toArray();
+					$this->fetchModelRelationships( $arr[$relationName], $relationData, $arrWith );
+				}
+
+			}
+
+		}else if( $relationObject instanceof HasManyThrough || $relationObject instanceof HasMany ){
+
+			$relationData->each(function(Model $model) use (&$arr, $relation, $relationName, $relationObject, $relationData, $arrWith){
+
+				$item = $model->toArray();
+				$this->fetchModelRelationships( $item, $model, $arrWith );
+
+				$arr[$relationName][] = $item;
+
+			});
+
+		}
+
+	}
+
+	protected function fetchModelRelationshipsOLD( &$arr, Model $model, $arrWith ){
+
+		foreach( $arrWith as $k => $v ){
+
 			if( \is_array($v) ){
 
-				$relationName = $k;
+				echo "\n $k";
+                $relation = new RelationType($k);
+				$relationName = $relation->relationName();
+				$relationObject	= $model->$relationName();
 				$relationData = $model->$relationName;
 				$relationWith = $v;
 
-				$relationData->each(function( $item ) use ( &$arr, $relationName, $relationWith ){
+				if( $relation->resultType() == RelationType::RESULT_AS_APPEND ){
+				}else{
+				}
+
+				if( $relationObject instanceof HasOne ){
 
 					$data = [];
-					$this->fetchModel( $data, $item, ["with"=>$relationWith] );
+					$this->fetchModel( $data, $relationData, ["with"=>$relationWith] );
 
-					$arr[ $relationName ][] = $data;
+						if( $relation->resultType() == RelationType::RESULT_AS_APPEND ){
+						}else{
+						}
 
-				});
+					//$arr[ $relationName ][] = $data;
+
+				}else{
+
+					$relationData->each(function( $item ) use ( &$arr, $relationName, $relationWith, $data ){
+						$this->fetchModel( $data, $item, ["with"=>$relationWith] );
+						//$arr[ $relationName ][] = $data;
+					});
+
+				}
 
 			}else{
 
+				echo "\n $v";
                 $relation = new RelationType($v);
 				$relationName 	= $relation->relationName();
 				$relationObject	= $model->$relationName();
@@ -181,9 +258,12 @@ class JsonExporter implements Jsonable{
 				}else{
 
 					if( $relation->resultType() == RelationType::RESULT_AS_APPEND ){
+						/*dd([
+							$arr,
+							$this->exportObjectByRelation( $relationObject, $relationData )
+						]);*/
 						$arr = \array_merge( $arr, $this->exportObjectByRelation( $relationObject, $relationData ) );
 					}else{
-						//$arr[ $relationName ] = ( $relationData ? $relationData->toArray() : [] );
 						$arr[ $relationName ] = $this->exportObjectByRelation( $relationObject, $relationData );
 					}
 
@@ -205,7 +285,7 @@ class JsonExporter implements Jsonable{
 	protected function exportObjectByRelation( $relation, $relationData ){
 
 		if( $relation instanceof HasOne ){
-			return (object)( $relationData ? $relationData->toArray() : [] );
+			return ( $relationData ? $relationData->toArray() : (object)[] );
 		}else if( $relation instanceof HasMany || $relation instanceof HasManyThrough ){
 			return ( $relationData ? $relationData->toArray() : [] );
 		}else{

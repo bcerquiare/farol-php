@@ -156,7 +156,7 @@ trait CrudController{
     public function edit($id){
 
 		$resource = $this->view($id);
-		$data = $resource->toArray()["data"]["model"];
+		//$data = $resource->toArray()["data"]["model"];
 
         return $resource->configure(function( JsonMaker $json ) use ( $data ){
             $json->data()->structure()->append( $this->structure( $data ) );
