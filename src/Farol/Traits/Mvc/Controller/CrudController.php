@@ -113,8 +113,10 @@ trait CrudController{
      */
     public function create(){
 
-        return json()->configure(function( JsonMaker $json ){
-            $json->data()->structure()->append( $this->structure() );
+		$data = request()->all();
+
+        return json()->configure(function( JsonMaker $json ) use ($data){
+            $json->data()->structure()->append( $this->structure($data) );
         });
 
     }
@@ -156,7 +158,7 @@ trait CrudController{
     public function edit($id){
 
 		$resource = $this->view($id);
-		//$data = $resource->toArray()["data"]["model"];
+		$data = $resource->toArray()["data"]["model"];
 
         return $resource->configure(function( JsonMaker $json ) use ( $data ){
             $json->data()->structure()->append( $this->structure( $data ) );

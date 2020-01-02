@@ -15,4 +15,8 @@ class Model extends EloquentModel{
     protected $dateFormat   = 'U';
     protected $crudInstance = null;
 
+	public function clearAllRealtionsCache(){
+		$this->setRelations([]);
+	}
+
 }

@@ -81,9 +81,13 @@ class CrudModel{
 
         $this->model->fill($fill);
         $this->model->save();
+		$this->model->clearAllRealtionsCache();
 
         $this->afterStore($this->model, $data);
+		$this->model->clearAllRealtionsCache();
+
         $this->afterSave($this->model, $data);
+		$this->model->clearAllRealtionsCache();
 
         return $this->model;
 
@@ -155,9 +159,13 @@ class CrudModel{
 
         $this->model->fill($fill);
         $this->model->save();
+		$this->model->clearAllRealtionsCache();
 
         $this->afterUpdate($this->model, $data);
+		$this->model->clearAllRealtionsCache();
+		
         $this->afterSave($this->model, $data);
+		$this->model->clearAllRealtionsCache();
 
         return $this->model;
 
