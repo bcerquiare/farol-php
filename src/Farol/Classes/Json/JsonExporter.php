@@ -3,6 +3,7 @@ namespace Farol\Classes\Json;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -156,9 +157,10 @@ class JsonExporter implements Jsonable{
 		$relation = new RelationType($relationString);
 		$relationName = $relation->relationName();
 		$relationObject	= $model->$relationName();
-		$relationData = $model->$relationName;
 
 		if( $relationObject instanceof HasOne || $relationObject instanceof BelongsTo){
+
+			$relationData = $model->$relationName;
 
 			if( $relation->resultType() == RelationType::RESULT_AS_APPEND ){
 
@@ -182,6 +184,8 @@ class JsonExporter implements Jsonable{
 			$relationObject instanceof BelongsToMany
 		){
 
+			$relationData = $model->$relationName;
+
 			$arr[$relationName] = [];
 
 			$relationData->each(function(Model $model) use (&$arr, $relation, $relationName, $relationObject, $relationData, $arrWith){
@@ -193,90 +197,12 @@ class JsonExporter implements Jsonable{
 
 			});
 
-		}
+		}else if( $relationObject instanceof Builder ){
 
-	}
-
-	protected function fetchModelRelationshipsOLD( &$arr, Model $model, $arrWith ){
-
-		foreach( $arrWith as $k => $v ){
-
-			if( \is_array($v) ){
-
-				echo "\n $k";
-                $relation = new RelationType($k);
-				$relationName = $relation->relationName();
-				$relationObject	= $model->$relationName();
-				$relationData = $model->$relationName;
-				$relationWith = $v;
-
-				if( $relation->resultType() == RelationType::RESULT_AS_APPEND ){
-				}else{
-				}
-
-				if( $relationObject instanceof HasOne ){
-
-					$data = [];
-					$this->fetchModel( $data, $relationData, ["with"=>$relationWith] );
-
-						if( $relation->resultType() == RelationType::RESULT_AS_APPEND ){
-						}else{
-						}
-
-					//$arr[ $relationName ][] = $data;
-
-				}else{
-
-					$relationData->each(function( $item ) use ( &$arr, $relationName, $relationWith, $data ){
-						$this->fetchModel( $data, $item, ["with"=>$relationWith] );
-						//$arr[ $relationName ][] = $data;
-					});
-
-				}
-
-			}else{
-
-				echo "\n $v";
-                $relation = new RelationType($v);
-				$relationName 	= $relation->relationName();
-				$relationObject	= $model->$relationName();
-				$relationData 	= $model->$relationName;
-
-				if( $relationData instanceof Collection ){
-
-                    if( $relation->resultType() == RelationType::RESULT_AS_MODEL ){
-
-                        $relationData->each(function( $item, $index ) use ( &$arr, $relation ){
-
-                            $arr[ $relation->relationName() ][$index] = [];
-                            $this->fetchModel( $arr[ $relation->relationName() ][$index], $item, ["with"=>[]] );
-
-                        });
-
-                    }else if( $relation->resultType() == RelationType::RESULT_AS_ARRAY ){
-
-                        $arr[ $relation->relationNameAlias() ] = [];
-                        $this->fetchArrayModel( $arr[ $relation->relationNameAlias() ], $relation, $relationData );
-
-                    }else if( $relation->resultType() == RelationType::RESULT_AS_APPEND ){
-
-						dd("FUNCAO NAO IMPLAMENTADA EM JSONEXPORTER");
-					}
-
-				}else{
-
-					if( $relation->resultType() == RelationType::RESULT_AS_APPEND ){
-						/*dd([
-							$arr,
-							$this->exportObjectByRelation( $relationObject, $relationData )
-						]);*/
-						$arr = \array_merge( $arr, $this->exportObjectByRelation( $relationObject, $relationData ) );
-					}else{
-						$arr[ $relationName ] = $this->exportObjectByRelation( $relationObject, $relationData );
-					}
-
-				}
-
+			if( $relation->resultType() == RelationType::RESULT_AS_APPEND ){
+				$arr = \array_merge( $arr, $relationObject->get()->toArray() );
+			}else if( $relation->resultType() == RelationType::RESULT_AS_MODEL){
+				$arr[$relationName] = $relationObject->get();
 			}
 
 		}
