@@ -55,9 +55,18 @@ trait CrudController{
 
         return json()->configure(function(JsonMaker $json){
 			$json->data()->items()->set( $this->indexList() );
+			$json->data()->structure()->append( $this->indexStructure() );
 		});
 
     }
+
+	/**
+	 * Retorna a estrutura usada pelo index
+	 * @return array
+	 */
+	protected function indexStructure(){
+		return [];
+	}
 
 	protected function indexList(){
 		return $this->getModel()->select();
